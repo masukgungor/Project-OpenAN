@@ -1,0 +1,99 @@
+# Copyright (c) 2026 Huawei Technologies Co., Ltd.
+# All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+#    not use this file except in compliance with the License. You may obtain
+#    a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+#    Unless required by applicable law or agreed to in writing, software
+#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#    License for the specific language governing permissions and limitations
+#    under the License.
+import pytest
+from unittest.mock import Mock, patch, MagicMock
+from a2a.types import AgentCard, AgentCardSignature
+from agent_registry.agent_registry.agent_card_signer import AgentCardSigner
+
+
+def test_is_enabled_true():
+    with patch('agent_registry.agent_registry.agent_card_signer.AgentCardSigner._load_credentials'), \
+         patch('agent_registry.agent_registry.agent_card_signer.AgentCardSigner._load_cert'):
+        signer = AgentCardSigner(
+            private_key_path="dummy_key.pem",
+            cert_path="dummy_cert.pem",
+            password_path=None,
+            algorithm="RS256",
+            sign_enabled=True
+        )
+
+        mock_private_key = MagicMock()
+        mock_public_key = MagicMock()
+        mock_numbers = MagicMock()
+        mock_numbers.n = 1234567890123456789012345645678901234564567890123456789012345645678901234567890123456123456789012345612345612345612345612345612345612345612345612345612345612345612345
+        mock_numbers.e = 65537
+        mock_public_key.public_numbers.return_value = mock_numbers
+        mock_private_key.public_key.return_value = mock_public_key
+
+        mock_signature = b'test_signature_data_256_bytes'
+        mock_private_key.sign.return_value = mock_signature
+
+        signer._private_key = mock_private_key
+        signer._kid = "test_kid"
+
+        agent_card = AgentCard()
+        agent_card.name = "test_agent"
+        agent_card.version = "1.0.0"
+
+        result = signer.sign_agent_card(agent_card)
+
+        assert result is agent_card
+        assert len(result.signatures) == 1
+        assert result.signatures[0].protected
+        assert result.signatures[0].signature
+
+
+def test_is_enabled_false():
+    signer = AgentCardSigner(
+        private_key_path="dummy_key.pem",
+        cert_path="dummy_cert.pem",
+        password_path=None,
+        algorithm="RS256",
+        sign_enabled=False
+    )
+
+    agent_card = AgentCard()
+    agent_card.name = "test_agent"
+    agent_card.version = "1.0.0"
+
+    result = signer.sign_agent_card(agent_card)
+
+    assert result is agent_card
+    assert len(result.signatures) == 0
+
+
+def test_is_enabled_method():
+    with patch('agent_registry.agent_registry.agent_card_signer.AgentCardSigner._load_credentials'), \
+         patch('agent_registry.agent_registry.agent_card_signer.AgentCardSigner._load_cert'):
+        signer_enabled = AgentCardSigner(
+            private_key_path="dummy_key.pem",
+            cert_path="dummy_cert.pem",
+            password_path=None,
+            algorithm="RS256",
+            sign_enabled=True
+        )
+
+        signer_disabled = AgentCardSigner(
+            private_key_path="dummy_key.pem",
+            cert_path="dummy_cert.pem",
+            password_path=None,
+            algorithm="RS256",
+            sign_enabled=False
+        )
+
+        assert signer_enabled.is_enabled() is True
+        assert signer_disabled.is_enabled() is False

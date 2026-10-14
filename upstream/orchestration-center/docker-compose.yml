@@ -1,0 +1,84 @@
+services:
+  orchestration-center:
+    build: .
+    container_name: openan-orchestration-center
+    ports:
+      - "127.0.0.1:5001:5001"
+    volumes:
+      - ./data:/opt/orchestration-center/data
+      - ./etc/ssl:/opt/orchestration-center/etc/ssl
+      - ./log:/opt/orchestration-center/log
+    environment:
+      - ORCH_IP=${ORCH_IP:-0.0.0.0}
+      - ORCH_PORT=${ORCH_PORT:-5001}
+      - ORCH_ENABLE_HTTPS=${ORCH_ENABLE_HTTPS:-false}
+      - ORCH_FORWARDED_ALLOW_IPS=${ORCH_FORWARDED_ALLOW_IPS:-*}
+      - PERSISTENCE_MODE=${PERSISTENCE_MODE:-file}
+      # registry-center is HTTPS-by-default in production (see that repo's
+      # docker-compose.yml); client_verify_server defaults false so the
+      # self-signed cert doesn't need trusting. Requires registry-center's
+      # openan-registry-center container reachable on openan-net — start
+      # that stack first.
+      - AGENT_REGISTRY_URL=${AGENT_REGISTRY_URL:-https://openan-registry-center:5000}
+    networks:
+      - openan-net
+    healthcheck:
+      # -k: ORCH_ENABLE_HTTPS defaults to a self-signed cert, which curl won't
+      # trust without it. Scheme follows ORCH_ENABLE_HTTPS -- the backend only
+      # listens on one protocol per port, so a plain http:// check against an
+      # HTTPS-only server would report unhealthy forever.
+      test: ["CMD-SHELL", "curl -kf http$$([ \"$$ORCH_ENABLE_HTTPS\" = true ] && echo s)://localhost:5001/rest/v1/orchestrate/agent-cards"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  workflow-designer:
+    build: ./workflow-designer
+    container_name: openan-orchestration-center-frontend
+    ports:
+      - "3003:80"
+    environment:
+      - BACKEND_HOST=orchestration-center
+      - BACKEND_PORT=${ORCH_PORT:-5001}
+      # Keep in sync with ORCH_ENABLE_HTTPS above -- nginx's proxy_pass needs
+      # to know the backend's scheme independently (compose can't derive one
+      # from the other without a shell). Set BACKEND_SCHEME=https alongside
+      # ORCH_ENABLE_HTTPS=true.
+      - BACKEND_SCHEME=${BACKEND_SCHEME:-http}
+    depends_on:
+      - orchestration-center
+    networks:
+      - openan-net
+    restart: unless-stopped
+
+  # ---- Optional: PostgreSQL for production persistence ----
+  # To enable: uncomment the block below and set these environment
+  # variables in the orchestration-center service above:
+  #   PERSISTENCE_MODE=postgresql
+  #   DB_HOST=postgres
+  #   DB_PORT=5432
+  #   DB_NAME=orchestration_center
+  #   DB_USERNAME=opena2a_t
+  #   DB_PASSWORD=openA2A_T
+  #
+  # postgres:
+  #   image: postgres:15-alpine
+  #   container_name: openan-orchestration-center-postgres
+  #   environment:
+  #     - POSTGRES_DB=${DB_NAME:-orchestration_center}
+  #     - POSTGRES_USER=${DB_USERNAME:-opena2a_t}
+  #     - POSTGRES_PASSWORD=${DB_PASSWORD:-openA2A_T}
+  #   volumes:
+  #     - pgdata:/var/lib/postgresql/data
+  #   networks:
+  #     - openan-net
+  #   restart: unless-stopped
+  #
+  # volumes:
+  #   pgdata:
+
+networks:
+  openan-net:
+    external: true
