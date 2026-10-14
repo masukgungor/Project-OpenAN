@@ -1,0 +1,23 @@
+{
+  "execution_id": "c23a66ed-0461-4442-ab37-631eb9883654",
+  "psop_id": "dispatch-1791532237",
+  "psop_name": "Energy Saving Intent: INT-C84E7B6F",
+  "started_at": "2026-10-09T07:48:37.883028Z",
+  "completed_at": "2026-10-09T07:50:37.858787Z",
+  "status": "success",
+  "execution_history": [],
+  "final_psop": null,
+  "events": [
+    {
+      "type": "start",
+      "data": {
+        "workflow": "Energy Saving Intent: INT-C84E7B6F",
+        "intent": "Energy Saving Intent: INT-C84E7B6F",
+        "phase": "searching",
+        "target_agent": "RAN Energy Saving Agent"
+      },
+      "timestamp": 1791532117.8831563
+    }
+  ],
+  "error": null
+}

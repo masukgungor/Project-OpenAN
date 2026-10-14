@@ -1,0 +1,30 @@
+{
+  "execution_id": "ac0592b6-d1cb-420d-8fd2-96e3133c252a",
+  "psop_id": "dispatch-1791462095",
+  "psop_name": "Energy Saving Intent: INT-3F29FFD0",
+  "started_at": "2026-10-08T12:21:35.457082Z",
+  "completed_at": "2026-10-08T12:21:35.538976Z",
+  "status": "failed",
+  "execution_history": [],
+  "final_psop": null,
+  "events": [
+    {
+      "type": "start",
+      "data": {
+        "workflow": "Energy Saving Intent: INT-3F29FFD0",
+        "intent": "Energy Saving Intent: INT-3F29FFD0",
+        "phase": "searching",
+        "target_agent": "RAN Energy Saving Agent"
+      },
+      "timestamp": 1791462095.4572644
+    },
+    {
+      "type": "error",
+      "data": {
+        "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: LLM call failed: [WinError 10013] An attempt was made to access a socket in a way forbidden by its access permissions"
+      },
+      "timestamp": 1791462095.5387852
+    }
+  ],
+  "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: LLM call failed: [WinError 10013] An attempt was made to access a socket in a way forbidden by its access permissions"
+}

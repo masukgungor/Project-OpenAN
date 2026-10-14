@@ -1,0 +1,30 @@
+{
+  "execution_id": "5df15ec5-1f1b-4ce6-8acd-b28fac1ec7d5",
+  "psop_id": "dispatch-1791530799",
+  "psop_name": "Energy Saving Intent: INT-2340E3BA",
+  "started_at": "2026-10-09T07:26:38.521915Z",
+  "completed_at": "2026-10-09T07:26:39.457310Z",
+  "status": "failed",
+  "execution_history": [],
+  "final_psop": null,
+  "events": [
+    {
+      "type": "start",
+      "data": {
+        "workflow": "Energy Saving Intent: INT-2340E3BA",
+        "intent": "Energy Saving Intent: INT-2340E3BA",
+        "phase": "searching",
+        "target_agent": "RAN Energy Saving Agent"
+      },
+      "timestamp": 1791530798.5229852
+    },
+    {
+      "type": "error",
+      "data": {
+        "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: LLM call failed: Server error '503 Service Unavailable' for url 'http://models.ascend.huawei.com/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      },
+      "timestamp": 1791530799.4568958
+    }
+  ],
+  "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: LLM call failed: Server error '503 Service Unavailable' for url 'http://models.ascend.huawei.com/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+}

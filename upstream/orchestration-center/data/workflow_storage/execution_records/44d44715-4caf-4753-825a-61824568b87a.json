@@ -1,0 +1,30 @@
+{
+  "execution_id": "44d44715-4caf-4753-825a-61824568b87a",
+  "psop_id": "dispatch-1791528531",
+  "psop_name": "Energy Saving Intent: INT-D11DB500",
+  "started_at": "2026-10-09T06:48:44.950299Z",
+  "completed_at": "2026-10-09T06:48:51.146959Z",
+  "status": "failed",
+  "execution_history": [],
+  "final_psop": null,
+  "events": [
+    {
+      "type": "start",
+      "data": {
+        "workflow": "Energy Saving Intent: INT-D11DB500",
+        "intent": "Energy Saving Intent: INT-D11DB500",
+        "phase": "searching",
+        "target_agent": "RAN Energy Saving Agent"
+      },
+      "timestamp": 1791528524.9504545
+    },
+    {
+      "type": "error",
+      "data": {
+        "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: LLM call failed: Server error '504 Gateway Time-out' for url 'http://models.ascend.huawei.com/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504"
+      },
+      "timestamp": 1791528531.1468275
+    }
+  ],
+  "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: LLM call failed: Server error '504 Gateway Time-out' for url 'http://models.ascend.huawei.com/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504"
+}

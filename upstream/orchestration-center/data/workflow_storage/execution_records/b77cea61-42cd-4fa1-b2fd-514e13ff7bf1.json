@@ -1,0 +1,30 @@
+{
+  "execution_id": "b77cea61-42cd-4fa1-b2fd-514e13ff7bf1",
+  "psop_id": "dispatch-1791445305",
+  "psop_name": "Energy Saving Intent: INT-0A266AD7",
+  "started_at": "2026-10-08T07:41:45.517477Z",
+  "completed_at": "2026-10-08T07:41:45.785251Z",
+  "status": "failed",
+  "execution_history": [],
+  "final_psop": null,
+  "events": [
+    {
+      "type": "start",
+      "data": {
+        "workflow": "Energy Saving Intent: INT-0A266AD7",
+        "intent": "Energy Saving Intent: INT-0A266AD7",
+        "phase": "searching",
+        "target_agent": null
+      },
+      "timestamp": 1791445305.5176122
+    },
+    {
+      "type": "error",
+      "data": {
+        "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: LLM call failed: Client error '402 Payment Required' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402"
+      },
+      "timestamp": 1791445305.785071
+    }
+  ],
+  "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: LLM call failed: Client error '402 Payment Required' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402"
+}

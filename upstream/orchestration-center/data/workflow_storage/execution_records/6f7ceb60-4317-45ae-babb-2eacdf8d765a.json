@@ -1,0 +1,30 @@
+{
+  "execution_id": "6f7ceb60-4317-45ae-babb-2eacdf8d765a",
+  "psop_id": "dispatch-1791374368",
+  "psop_name": "Energy Saving Intent: INT-175B98F7",
+  "started_at": "2026-10-07T11:59:22.429726Z",
+  "completed_at": "2026-10-07T11:59:28.574379Z",
+  "status": "failed",
+  "execution_history": [],
+  "final_psop": null,
+  "events": [
+    {
+      "type": "start",
+      "data": {
+        "workflow": "Energy Saving Intent: INT-175B98F7",
+        "intent": "Energy Saving Intent: INT-175B98F7",
+        "phase": "searching",
+        "target_agent": null
+      },
+      "timestamp": 1791374362.4299862
+    },
+    {
+      "type": "error",
+      "data": {
+        "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: LLM call failed: Server error '504 Gateway Time-out' for url 'http://127.0.0.1:11434/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504"
+      },
+      "timestamp": 1791374368.5739202
+    }
+  ],
+  "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: LLM call failed: Server error '504 Gateway Time-out' for url 'http://127.0.0.1:11434/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504"
+}

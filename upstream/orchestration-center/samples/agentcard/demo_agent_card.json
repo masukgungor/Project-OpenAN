@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Demo Agent",
+    "description": "Simple demo agent for testing A2A-T protocol",
+    "provider": {
+      "organization": "MyOrg",
+      "url": "https://example.com"
+    },
+    "version": "1.0.0",
+    "capabilities": {
+      "streaming": true,
+      "pushNotifications": false,
+      "extendedAgentCard": false,
+      "extensions": [
+        {
+          "uri": "https://projects.tmforum.org/a2aproject/telecommunication/extensions/Task-T/v1",
+          "description": "Extension of structured prompt Task-T requests.",
+          "required": false
+        },
+        {
+          "uri": "https://projects.tmforum.org/a2aproject/telecommunication/extensions/NEGOTIATION-T",
+          "description": "Extension for A2A-T negotiation text exchange.",
+          "required": false
+        },
+        {
+          "uri": "https://projects.tmforum.org/a2aproject/telecommunication/extensions/Authorization-T/v1",
+          "description": "Extension for A2A-T authorization.",
+          "required": false
+        },
+        {
+          "uri": "https://projects.tmforum.org/a2aproject/telecommunication/extensions/Notification-T/v1",
+          "description": "Extension for A2A-T notification push.",
+          "required": false
+        }
+      ]
+    },
+    "defaultInputModes": [
+      "text/plain"
+    ],
+    "defaultOutputModes": [
+      "text/plain"
+    ],
+    "skills": [
+      {
+        "id": "demo-task",
+        "name": "Demo Task",
+        "description": "Simple demo task that echoes back the input",
+        "tags": [
+          "demo",
+          "test"
+        ]
+      }
+    ],
+    "supportedInterfaces": [
+      {
+        "protocolBinding": "HTTP+JSON",
+        "protocolVersion": "1.0",
+        "url": "http://127.0.0.1:8905/a2a/json"
+      }
+    ]
+  }
+]

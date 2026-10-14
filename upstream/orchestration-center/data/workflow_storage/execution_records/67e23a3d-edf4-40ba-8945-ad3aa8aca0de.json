@@ -1,0 +1,30 @@
+{
+  "execution_id": "67e23a3d-edf4-40ba-8945-ad3aa8aca0de",
+  "psop_id": "dispatch-1791444304",
+  "psop_name": "Energy Saving Intent: INT-C6ED1209",
+  "started_at": "2026-10-08T07:25:04.459972Z",
+  "completed_at": "2026-10-08T07:25:04.887729Z",
+  "status": "failed",
+  "execution_history": [],
+  "final_psop": null,
+  "events": [
+    {
+      "type": "start",
+      "data": {
+        "workflow": "Energy Saving Intent: INT-C6ED1209",
+        "intent": "Energy Saving Intent: INT-C6ED1209",
+        "phase": "searching",
+        "target_agent": null
+      },
+      "timestamp": 1791444304.460201
+    },
+    {
+      "type": "error",
+      "data": {
+        "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: LLM call failed: Client error '400 Bad Request' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400"
+      },
+      "timestamp": 1791444304.887351
+    }
+  ],
+  "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: LLM call failed: Client error '400 Bad Request' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400"
+}

@@ -1,0 +1,361 @@
+{
+  "execution_id": "3d91dd87-3ddc-4317-8478-7953ae5ed330",
+  "psop_id": "f9c9ec32-e172-484b-8c02-bc7a50a3de61",
+  "psop_name": "RAN Energy Saving with MAE Negotiation",
+  "started_at": "2026-10-14T08:06:50.556398Z",
+  "completed_at": "2026-10-14T08:16:14.117671Z",
+  "status": "failed",
+  "execution_history": [],
+  "final_psop": {
+    "id": "f9c9ec32-e172-484b-8c02-bc7a50a3de61",
+    "name": "RAN Energy Saving with MAE Negotiation",
+    "description": "基站节能意图的探索、生成、交付、执行与效果评估的完整闭环流程，包含MAE协商步骤。",
+    "created_at": "2026-10-14T07:36:39.140063Z",
+    "steps": [
+      {
+        "name": "step1",
+        "type": "AllSuccess",
+        "subtasks": [
+          {
+            "task_id": "task_1_1",
+            "description": "评估并确定指定RAN ES意图目标的最佳可能性，考虑当前资源状况和系统能力。",
+            "agent": "RAN Energy Saving Agent",
+            "skill": "RAN ES Intent Exploration",
+            "status": "pending"
+          }
+        ],
+        "next": [
+          {
+            "step": "step2",
+            "condition": "意图探索成功，获得目标最佳可能值"
+          }
+        ],
+        "layer": 0,
+        "context_from": null
+      },
+      {
+        "name": "step2",
+        "type": "AllSuccess",
+        "subtasks": [
+          {
+            "task_id": "task_2_1",
+            "description": "发起RAN ES意图探索请求，获取指定意图目标的最佳可能值。",
+            "agent": "Energy Saving Intent Agent",
+            "skill": "Intent Exploration Request",
+            "status": "pending"
+          }
+        ],
+        "next": [
+          {
+            "step": "step3",
+            "condition": "意图探索请求完成"
+          }
+        ],
+        "layer": 0,
+        "context_from": null
+      },
+      {
+        "name": "step3",
+        "type": "AllSuccess",
+        "subtasks": [
+          {
+            "task_id": "task_3_1",
+            "description": "根据探索报告和业务需求生成RAN节能意图内容，包括不同时段、不同RAT的吞吐量和节能目标。",
+            "agent": "Energy Saving Intent Agent",
+            "skill": "Intent Generation",
+            "status": "pending"
+          }
+        ],
+        "next": [
+          {
+            "step": "step4",
+            "condition": "节能意图内容生成成功"
+          }
+        ],
+        "layer": 0,
+        "context_from": null
+      },
+      {
+        "name": "step4",
+        "type": "AllSuccess",
+        "subtasks": [
+          {
+            "task_id": "task_4_1",
+            "description": "将生成的节能意图交付给RAN能效优化智能体，并管理意图生命周期。",
+            "agent": "Energy Saving Intent Agent",
+            "skill": "Intent Delivery",
+            "status": "pending"
+          }
+        ],
+        "next": [
+          {
+            "step": "step5",
+            "condition": "意图成功交付并激活"
+          }
+        ],
+        "layer": 0,
+        "context_from": null
+      },
+      {
+        "name": "step5",
+        "type": "AllSuccess",
+        "subtasks": [
+          {
+            "task_id": "task_5_1",
+            "description": "管理RAN节能意图的生命周期，包括数据采集、分析、方案制定与配置下发。",
+            "agent": "RAN Energy Saving Agent",
+            "skill": "RAN ES Intent Lifecycle Management",
+            "status": "pending"
+          },
+          {
+            "task_id": "task_5_2",
+            "description": "提供意图报告查询，报告意图实现状态、达成值、推荐值及配置修改信息。",
+            "agent": "RAN Energy Saving Agent",
+            "skill": "RAN ES Intent Reporting",
+            "status": "pending"
+          },
+          {
+            "task_id": "task_5_3",
+            "description": "【MAE协商】与MAE Agent进行A2A-T协商，验证优化方案的可实现性。发送ClusterOptimizationPlan给MAE Agent，获取约束条件和风险因素评估。",
+            "agent": "MAE Agent",
+            "skill": "MAE Negotiation",
+            "status": "pending"
+          }
+        ],
+        "next": [
+          {
+            "step": "step6",
+            "condition": "收到RAN ES意图执行报告"
+          }
+        ],
+        "layer": 0,
+        "context_from": null
+      },
+      {
+        "name": "step6",
+        "type": "AllSuccess",
+        "subtasks": [
+          {
+            "task_id": "task_6_1",
+            "description": "评估不同RAN域的节能效果，根据效果决定是否调整意图。综合前面所有步骤的分析和执行结果进行最终评估。",
+            "agent": "Energy Saving Intent Agent",
+            "skill": "Effect Evaluation",
+            "status": "pending"
+          }
+        ],
+        "next": [
+          {
+            "step": "end",
+            "condition": "节能效果评估完成，流程结束"
+          }
+        ],
+        "layer": 1,
+        "context_from": [
+          "*"
+        ]
+      }
+    ],
+    "related_preflow": null,
+    "user_intent": null,
+    "tags": [],
+    "source": "graph_editor"
+  },
+  "events": [
+    {
+      "type": "start",
+      "data": {
+        "workflow": "Energy Saving Intent: INT-AF0AC15B",
+        "intent": "Energy Saving Intent: INT-AF0AC15B",
+        "phase": "searching",
+        "target_agent": "RAN Energy Saving Agent"
+      },
+      "timestamp": 1791965210.5565262
+    },
+    {
+      "type": "start",
+      "data": {
+        "workflow": "RAN Energy Saving with MAE Negotiation",
+        "workflow_id": "f9c9ec32-e172-484b-8c02-bc7a50a3de61",
+        "phase": "loading"
+      },
+      "timestamp": 1791965474.0644548
+    },
+    {
+      "type": "psop_update",
+      "data": {
+        "psop": {
+          "id": "f9c9ec32-e172-484b-8c02-bc7a50a3de61",
+          "name": "RAN Energy Saving with MAE Negotiation",
+          "description": "基站节能意图的探索、生成、交付、执行与效果评估的完整闭环流程，包含MAE协商步骤。",
+          "created_at": "2026-10-14T07:36:39.140063Z",
+          "steps": [
+            {
+              "name": "step1",
+              "type": "AllSuccess",
+              "subtasks": [
+                {
+                  "task_id": "task_1_1",
+                  "description": "评估并确定指定RAN ES意图目标的最佳可能性，考虑当前资源状况和系统能力。",
+                  "agent": "RAN Energy Saving Agent",
+                  "skill": "RAN ES Intent Exploration",
+                  "status": "pending"
+                }
+              ],
+              "next": [
+                {
+                  "step": "step2",
+                  "condition": "意图探索成功，获得目标最佳可能值"
+                }
+              ],
+              "layer": 0,
+              "context_from": null
+            },
+            {
+              "name": "step2",
+              "type": "AllSuccess",
+              "subtasks": [
+                {
+                  "task_id": "task_2_1",
+                  "description": "发起RAN ES意图探索请求，获取指定意图目标的最佳可能值。",
+                  "agent": "Energy Saving Intent Agent",
+                  "skill": "Intent Exploration Request",
+                  "status": "pending"
+                }
+              ],
+              "next": [
+                {
+                  "step": "step3",
+                  "condition": "意图探索请求完成"
+                }
+              ],
+              "layer": 0,
+              "context_from": null
+            },
+            {
+              "name": "step3",
+              "type": "AllSuccess",
+              "subtasks": [
+                {
+                  "task_id": "task_3_1",
+                  "description": "根据探索报告和业务需求生成RAN节能意图内容，包括不同时段、不同RAT的吞吐量和节能目标。",
+                  "agent": "Energy Saving Intent Agent",
+                  "skill": "Intent Generation",
+                  "status": "pending"
+                }
+              ],
+              "next": [
+                {
+                  "step": "step4",
+                  "condition": "节能意图内容生成成功"
+                }
+              ],
+              "layer": 0,
+              "context_from": null
+            },
+            {
+              "name": "step4",
+              "type": "AllSuccess",
+              "subtasks": [
+                {
+                  "task_id": "task_4_1",
+                  "description": "将生成的节能意图交付给RAN能效优化智能体，并管理意图生命周期。",
+                  "agent": "Energy Saving Intent Agent",
+                  "skill": "Intent Delivery",
+                  "status": "pending"
+                }
+              ],
+              "next": [
+                {
+                  "step": "step5",
+                  "condition": "意图成功交付并激活"
+                }
+              ],
+              "layer": 0,
+              "context_from": null
+            },
+            {
+              "name": "step5",
+              "type": "AllSuccess",
+              "subtasks": [
+                {
+                  "task_id": "task_5_1",
+                  "description": "管理RAN节能意图的生命周期，包括数据采集、分析、方案制定与配置下发。",
+                  "agent": "RAN Energy Saving Agent",
+                  "skill": "RAN ES Intent Lifecycle Management",
+                  "status": "pending"
+                },
+                {
+                  "task_id": "task_5_2",
+                  "description": "提供意图报告查询，报告意图实现状态、达成值、推荐值及配置修改信息。",
+                  "agent": "RAN Energy Saving Agent",
+                  "skill": "RAN ES Intent Reporting",
+                  "status": "pending"
+                },
+                {
+                  "task_id": "task_5_3",
+                  "description": "【MAE协商】与MAE Agent进行A2A-T协商，验证优化方案的可实现性。发送ClusterOptimizationPlan给MAE Agent，获取约束条件和风险因素评估。",
+                  "agent": "MAE Agent",
+                  "skill": "MAE Negotiation",
+                  "status": "pending"
+                }
+              ],
+              "next": [
+                {
+                  "step": "step6",
+                  "condition": "收到RAN ES意图执行报告"
+                }
+              ],
+              "layer": 0,
+              "context_from": null
+            },
+            {
+              "name": "step6",
+              "type": "AllSuccess",
+              "subtasks": [
+                {
+                  "task_id": "task_6_1",
+                  "description": "评估不同RAN域的节能效果，根据效果决定是否调整意图。综合前面所有步骤的分析和执行结果进行最终评估。",
+                  "agent": "Energy Saving Intent Agent",
+                  "skill": "Effect Evaluation",
+                  "status": "pending"
+                }
+              ],
+              "next": [
+                {
+                  "step": "end",
+                  "condition": "节能效果评估完成，流程结束"
+                }
+              ],
+              "layer": 1,
+              "context_from": [
+                "*"
+              ]
+            }
+          ],
+          "related_preflow": null,
+          "user_intent": null,
+          "tags": [],
+          "source": "graph_editor"
+        }
+      },
+      "timestamp": 1791965474.0672326
+    },
+    {
+      "type": "start",
+      "data": {
+        "workflow": "RAN Energy Saving with MAE Negotiation",
+        "intent": "Energy Saving Intent: INT-AF0AC15B",
+        "phase": "dispatching",
+        "target_agent": "RAN Energy Saving Agent"
+      },
+      "timestamp": 1791965474.0823805
+    },
+    {
+      "type": "error",
+      "data": {
+        "error": ""
+      }
+    }
+  ],
+  "error": ""
+}

@@ -1,0 +1,30 @@
+{
+  "execution_id": "55c9ed6f-c068-4e15-a72a-fa8e61752237",
+  "psop_id": "dispatch-1791462881",
+  "psop_name": "Energy Saving Intent: INT-37A57729",
+  "started_at": "2026-10-08T12:34:39.831507Z",
+  "completed_at": "2026-10-08T12:34:41.276073Z",
+  "status": "failed",
+  "execution_history": [],
+  "final_psop": null,
+  "events": [
+    {
+      "type": "start",
+      "data": {
+        "workflow": "Energy Saving Intent: INT-37A57729",
+        "intent": "Energy Saving Intent: INT-37A57729",
+        "phase": "searching",
+        "target_agent": "RAN Energy Saving Agent"
+      },
+      "timestamp": 1791462879.831643
+    },
+    {
+      "type": "error",
+      "data": {
+        "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: LLM call failed: Redirect response '302 Found' for url 'https://openrouter.ai/api/v1/chat/completions'\nRedirect location: 'http://114.114.114.114:9421/proxycontrolwarn/httpwarning_3355.html?ori_url=aHR0cHM6Ly9vcGVucm91dGVyLmFpL2FwaS92MS9jaGF0L2NvbXBsZXRpb25z&uid=0'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302"
+      },
+      "timestamp": 1791462881.2759092
+    }
+  ],
+  "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: LLM call failed: Redirect response '302 Found' for url 'https://openrouter.ai/api/v1/chat/completions'\nRedirect location: 'http://114.114.114.114:9421/proxycontrolwarn/httpwarning_3355.html?ori_url=aHR0cHM6Ly9vcGVucm91dGVyLmFpL2FwaS92MS9jaGF0L2NvbXBsZXRpb25z&uid=0'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302"
+}

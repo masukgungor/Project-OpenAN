@@ -1,0 +1,30 @@
+{
+  "execution_id": "e010f860-d46b-4244-88a0-cca9948cfe76",
+  "psop_id": "dispatch-1791462913",
+  "psop_name": "Energy Saving Intent: INT-FEE7DF54",
+  "started_at": "2026-10-08T12:35:13.419931Z",
+  "completed_at": "2026-10-08T12:35:13.468269Z",
+  "status": "failed",
+  "execution_history": [],
+  "final_psop": null,
+  "events": [
+    {
+      "type": "start",
+      "data": {
+        "workflow": "Energy Saving Intent: INT-FEE7DF54",
+        "intent": "Energy Saving Intent: INT-FEE7DF54",
+        "phase": "searching",
+        "target_agent": "RAN Energy Saving Agent"
+      },
+      "timestamp": 1791462913.4201064
+    },
+    {
+      "type": "error",
+      "data": {
+        "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: LLM call failed: [Errno 11001] getaddrinfo failed"
+      },
+      "timestamp": 1791462913.4679787
+    }
+  ],
+  "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: LLM call failed: [Errno 11001] getaddrinfo failed"
+}

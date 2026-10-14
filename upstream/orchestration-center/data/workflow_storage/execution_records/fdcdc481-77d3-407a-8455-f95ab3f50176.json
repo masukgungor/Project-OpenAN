@@ -1,0 +1,30 @@
+{
+  "execution_id": "fdcdc481-77d3-407a-8455-f95ab3f50176",
+  "psop_id": "dispatch-1791530017",
+  "psop_name": "Energy Saving Intent: INT-0A322DD1",
+  "started_at": "2026-10-09T07:12:36.955794Z",
+  "completed_at": "2026-10-09T07:13:37.206464Z",
+  "status": "failed",
+  "execution_history": [],
+  "final_psop": null,
+  "events": [
+    {
+      "type": "start",
+      "data": {
+        "workflow": "Energy Saving Intent: INT-0A322DD1",
+        "intent": "Energy Saving Intent: INT-0A322DD1",
+        "phase": "searching",
+        "target_agent": "RAN Energy Saving Agent"
+      },
+      "timestamp": 1791529956.9560597
+    },
+    {
+      "type": "error",
+      "data": {
+        "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: LLM call failed: timed out"
+      },
+      "timestamp": 1791530017.2059734
+    }
+  ],
+  "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: LLM call failed: timed out"
+}

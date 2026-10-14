@@ -1,0 +1,235 @@
+# Copyright (c) 2026 Huawei Technologies Co., Ltd.
+# All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+#    not use this file except in compliance with the License. You may obtain
+#    a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+#    Unless required by applicable law or agreed to in writing, software
+#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#    License for the specific language governing permissions and limitations
+#    under the License.
+
+"""Shared SSE execution endpoint.
+
+The orchestration center does NOT execute workflows itself. It sends
+the intent to the Workbench Agent via A2A-T, which searches/loads the
+PSOP, executes the workflow, and streams SDK events back as A2A-T
+TaskUpdate metadata (__sdk_event__). This module drains the stream
+and forwards events to the frontend SSE.
+"""
+
+import asyncio
+import json
+import time
+from datetime import datetime, timezone
+from typing import List
+
+from a2a.types import AgentCard
+from fastapi.responses import StreamingResponse
+from loguru import logger
+
+from orchestrate.runtime.exec_engine import OrchestrationEngine
+
+
+async def dispatch_intent_sse(
+    agent_cards: List[AgentCard],
+    intent: str,
+    target_agent: str = None,
+    lang: str = None,
+) -> StreamingResponse:
+    """Dispatch an intent to a host agent via A2A-T and stream events.
+
+    Slim orchestration: the orchestration center does NOT execute the
+    workflow itself. It sends the intent to the target host agent, which
+    searches/loads the PSOP, executes it via the SDK, and streams SDK
+    events back as A2A-T TaskUpdate metadata (__sdk_event__).
+
+    This function drains the A2A-T response stream, extracts the SDK
+    events from metadata, and forwards them to the frontend SSE.
+    """
+    if not agent_cards:
+        async def error_stream():
+            yield f"data: {json.dumps({'type': 'error', 'message': 'No agent cards available'}, ensure_ascii=False)}\n\n"
+        return StreamingResponse(
+            error_stream(),
+            media_type="text/event-stream",
+            headers={
+                "Cache-Control": "no-cache",
+                "Connection": "keep-alive",
+                "X-Accel-Buffering": "no",
+            },
+        )
+
+    if target_agent is None and agent_cards:
+        target_agent = getattr(agent_cards[0], "name", None)
+        logger.info(f"No target_agent specified, using first available agent: {target_agent}")
+
+    engine = OrchestrationEngine(agent_cards, target_agent=target_agent, lang=lang)
+
+    async def stream():
+        from orchestrate.core.model.execution_record import ExecutionRecord, ExecutionStatus
+        from common.custom import HandlerRegistry, InterfaceType
+
+        started_at = datetime.now(timezone.utc)
+        collected_events = []
+        execution_history = []
+        current_step = None
+        step_results = {}
+        psop_id = ""
+        psop_name = ""
+        final_psop = None
+        record_status = ExecutionStatus.SUCCESS
+        record_error = None
+
+        HEARTBEAT_INTERVAL = 15
+
+        event_queue = asyncio.Queue()
+        done_sentinel = object()
+
+        async def _drain_engine():
+            try:
+                async for event in engine.events(intent):
+                    await event_queue.put(event)
+            except Exception as e:
+                await event_queue.put({"type": "error", "data": {"error": str(e)}, "timestamp": time.time()})
+            finally:
+                await event_queue.put(done_sentinel)
+
+        drain_task = asyncio.create_task(_drain_engine())
+
+        try:
+            while True:
+                try:
+                    event = await asyncio.wait_for(event_queue.get(), timeout=HEARTBEAT_INTERVAL)
+                except asyncio.TimeoutError:
+                    yield ": heartbeat\n\n"
+                    continue
+
+                if event is done_sentinel:
+                    break
+
+                collected_events.append(event)
+                evt_type = event.get("type", "")
+                evt_data = event.get("data", {})
+
+                if evt_type == "start":
+                    wf_id = evt_data.get("workflow_id")
+                    if wf_id:
+                        psop_id = wf_id
+                        wf_name = evt_data.get("workflow")
+                        if wf_name:
+                            psop_name = wf_name
+                    elif not psop_name:
+                        wf_name = evt_data.get("workflow")
+                        if wf_name:
+                            psop_name = wf_name
+
+                elif evt_type == "psop_update":
+                    psop_data = evt_data.get("psop")
+                    if psop_data:
+                        final_psop = psop_data
+                        if not psop_id:
+                            psop_id = psop_data.get("id", "")
+                        if not psop_name:
+                            psop_name = psop_data.get("name", "")
+
+                elif evt_type == "step_start":
+                    step_name = evt_data.get("step", "")
+                    current_step = step_name
+                    if step_name not in step_results:
+                        step_results[step_name] = {"status": "running", "tasks": []}
+
+                elif evt_type == "step_complete":
+                    step_name = evt_data.get("step", "")
+                    results = evt_data.get("results", {})
+                    if step_name in step_results:
+                        step_results[step_name]["status"] = "completed"
+                        step_results[step_name]["results"] = results
+                        execution_history.append({
+                            "step": step_name,
+                            "status": "completed",
+                            "results": results,
+                            "timestamp": event.get("timestamp", time.time())
+                        })
+                    current_step = None
+
+                elif evt_type == "task_request":
+                    if current_step:
+                        step_results[current_step]["tasks"].append({
+                            "type": "request",
+                            "agent": evt_data.get("agent", ""),
+                            "task": evt_data.get("task", ""),
+                            "timestamp": event.get("timestamp", time.time())
+                        })
+
+                elif evt_type == "task_response":
+                    if current_step and current_step in step_results:
+                        step_results[current_step]["tasks"].append({
+                            "type": "response",
+                            "agent": evt_data.get("agent", ""),
+                            "output": evt_data.get("output", ""),
+                            "timestamp": event.get("timestamp", time.time())
+                        })
+
+                elif evt_type == "task_status_changed":
+                    step_name = evt_data.get("step", "")
+                    if step_name in step_results:
+                        step_results[step_name]["task_status"] = evt_data.get("status", "")
+
+                elif evt_type == "error":
+                    record_status = ExecutionStatus.FAILED
+                    record_error = evt_data.get("error", "Unknown error")
+                    if current_step:
+                        execution_history.append({
+                            "step": current_step,
+                            "status": "failed",
+                            "error": record_error,
+                            "timestamp": event.get("timestamp", time.time())
+                        })
+
+                yield f"data: {json.dumps(event, ensure_ascii=False, default=str)}\n\n"
+
+        except Exception as e:
+            record_status = ExecutionStatus.FAILED
+            record_error = str(e)
+            logger.error(f"[SSE] Stream error: {e}", exc_info=True)
+        finally:
+            drain_task.cancel()
+            if not psop_id:
+                psop_id = f"dispatch-{int(time.time())}"
+            if not psop_name:
+                psop_name = intent[:80]
+
+            try:
+                record = ExecutionRecord(
+                    psop_id=psop_id,
+                    psop_name=psop_name,
+                    started_at=started_at,
+                    completed_at=datetime.now(timezone.utc),
+                    status=record_status,
+                    execution_history=execution_history,
+                    final_psop=final_psop,
+                    events=collected_events,
+                    error=record_error,
+                )
+                handler = HandlerRegistry.get_handler(InterfaceType.SAVE_EXECUTION_RECORD)
+                handler.handle(record)
+                logger.info(f"[SSE] Execution record saved: {record.execution_id} (status={record_status.value}, events={len(collected_events)}, history={len(execution_history)})")
+            except Exception as e:
+                logger.error(f"[SSE] Failed to save execution record: {e}", exc_info=True)
+
+    return StreamingResponse(
+        stream(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",
+        },
+    )

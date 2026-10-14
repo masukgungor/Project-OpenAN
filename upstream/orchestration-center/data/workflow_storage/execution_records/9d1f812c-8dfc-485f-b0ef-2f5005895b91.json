@@ -1,0 +1,30 @@
+{
+  "execution_id": "9d1f812c-8dfc-485f-b0ef-2f5005895b91",
+  "psop_id": "dispatch-1791443593",
+  "psop_name": "Energy Saving Intent: INT-E7FDEB96",
+  "started_at": "2026-10-08T07:13:12.651888Z",
+  "completed_at": "2026-10-08T07:13:13.509498Z",
+  "status": "failed",
+  "execution_history": [],
+  "final_psop": null,
+  "events": [
+    {
+      "type": "start",
+      "data": {
+        "workflow": "Energy Saving Intent: INT-E7FDEB96",
+        "intent": "Energy Saving Intent: INT-E7FDEB96",
+        "phase": "searching",
+        "target_agent": null
+      },
+      "timestamp": 1791443592.652036
+    },
+    {
+      "type": "error",
+      "data": {
+        "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: LLM call failed: Client error '404 Not Found' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404"
+      },
+      "timestamp": 1791443593.5093768
+    }
+  ],
+  "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: LLM call failed: Client error '404 Not Found' for url 'https://openrouter.ai/api/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404"
+}

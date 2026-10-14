@@ -1,0 +1,30 @@
+{
+  "execution_id": "77ae29ef-c48c-474d-a928-bd17c2d62b2f",
+  "psop_id": "dispatch-1791456299",
+  "psop_name": "Energy Saving Intent: INT-7DEC9576",
+  "started_at": "2026-10-08T10:44:57.231838Z",
+  "completed_at": "2026-10-08T10:44:59.059841Z",
+  "status": "failed",
+  "execution_history": [],
+  "final_psop": null,
+  "events": [
+    {
+      "type": "start",
+      "data": {
+        "workflow": "Energy Saving Intent: INT-7DEC9576",
+        "intent": "Energy Saving Intent: INT-7DEC9576",
+        "phase": "searching",
+        "target_agent": "RAN Energy Saving Agent"
+      },
+      "timestamp": 1791456297.2320063
+    },
+    {
+      "type": "error",
+      "data": {
+        "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: No JSON code block found in LLM answer. Response preview: User Safety: safe"
+      },
+      "timestamp": 1791456299.0597055
+    }
+  ],
+  "error": "Failed to retrieve PSOP topN by intent: Failed to retrieve PSOP by intent: No JSON code block found in LLM answer. Response preview: User Safety: safe"
+}
